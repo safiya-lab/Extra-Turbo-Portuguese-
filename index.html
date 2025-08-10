@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#009739" />
+<link rel="manifest" href="manifest.webmanifest" />
+<title>TurboPortuguês</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background: #009739;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+  }
+  nav {
+    display: flex;
+    background: #002776;
+    color: white;
+    justify-content: space-around;
+    padding: 8px 0;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0.9em;
+    flex: 1;
+  }
+  .tab {
+    display: none;
+  }
+  .tab.active {
+    display: block;
+  }
+  .btn {
+    background: #ffcc29;
+    color: #002776;
+    border: none;
+    padding: 10px;
+    margin: 8px 0;
+    width: 100%;
+    font-size: 1em;
+    border-radius: 6px;
+  }
+  .score {
+    font-size: 1.1em;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>🇧🇷 TurboPortuguês</header>
+
+<main>
+  <section id="home" class="tab active">
+    <h2>Bem-vindo!</h2>
+    <p>Streak: <span id="streak">0</span> dias</p>
+    <p>XP: <span id="xp">0</span></p>
+    <button class="btn" onclick="startLesson()">Começar Aula</button>
+  </section>
+
+  <section id="learn" class="tab">
+    <h2>Aprender</h2>
+    <p>Escolha um conjunto de frases:</p>
+    <button class="btn" onclick="loadDeck('core')">Core</button>
+    <button class="btn" onclick="loadDeck('restaurant')">Restaurante</button>
+  </section>
+
+  <section id="practice" class="tab">
+    <h2>Praticar Pronúncia</h2>
+    <p id="practicePhrase">Clique abaixo para ouvir e repetir.</p>
+    <button class="btn" onclick="playPhrase()">🔊 Ouvir</button>
+    <button class="btn" onclick="recordAndScore()">🎤 Gravar & Avaliar</button>
+    <p class="score" id="pronScore"></p>
+  </section>
+
+  <section id="missions" class="tab">
+    <h2>Missões Diárias</h2>
+    <p id="missionText">Complete sua missão para ganhar XP extra!</p>
+  </section>
+
+  <section id="profile" class="tab">
+    <h2>Perfil</h2>
+    <label>API Key (ElevenLabs/Azure):</label>
+    <input id="apiKey" type="text" placeholder="Cole aqui" style="width:100%;" />
+    <button class="btn" onclick="saveApiKey()">Salvar</button>
+  </section>
+</main>
+
+<nav>
+  <button onclick="showTab('home')">🏠 Home</button>
+  <button onclick="showTab('learn')">📚 Learn</button>
+  <button onclick="showTab('practice')">🎤 Practice</button>
+  <button onclick="showTab('missions')">🎯 Missions</button>
+  <button onclick="showTab('profile')">👤 Profile</button>
+</nav>
+
+<script>
+  let xp = 0;
+  let streak = 0;
+  let apiKey = localStorage.getItem('apiKey') || '';
+  document.getElementById('apiKey').value = apiKey;
+
+  function showTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+  }
+
+  function startLesson() {
+    xp += 10;
+    streak += 1;
+    updateStats();
+    alert('Parabéns! Você ganhou 10 XP.');
+  }
+
+  function updateStats() {
+    document.getElementById('xp').innerText = xp;
+    document.getElementById('streak').innerText = streak;
+  }
+
+  function loadDeck(deckName) {
+    alert('Carregando deck: ' + deckName);
+  }
+
+  async function playPhrase() {
+    const phrase = "Olá, tudo bem?";
+    if (!apiKey) {
+      alert('Insira sua API Key no Perfil para ouvir a voz AI.');
+      return;
+    }
+    // Placeholder: In real use, fetch TTS audio from ElevenLabs or Azure
+    alert(`(TTS) ${phrase}`);
+  }
+
+  function recordAndScore() {
+    // Placeholder for AI scoring
+    document.getElementById('pronScore').innerText = "Sua pontuação: 85/100";
+  }
+
+  function saveApiKey() {
+    apiKey = document.getElementById('apiKey').value;
+    localStorage.setItem('apiKey', apiKey);
+    alert('API Key salva!');
+  }
+</script>
+
+</body>
+</html>
